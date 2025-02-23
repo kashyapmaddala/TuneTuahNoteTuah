@@ -4,9 +4,11 @@ const path = require('path');
 const fs = require('fs');
 const { Midi } = require('@tonejs/midi'); // Add this for MIDI generation
 const { spawn } = require('child_process'); // Used to run midi_generator.py
+const axios = require('axios'); // Add axios for HTTP requests
+
 
 const app = express();
-const PORT = 5001;
+const PORT = 5002;
 
 const serverDir = __dirname;
 const pythonScriptPath = path.join(serverDir, '..', 'python', 'textToMidi.py');
@@ -158,87 +160,3 @@ function noteToMidi(note) {
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-
-
-/*
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const fs = require('fs');
-const { Midi } = require('@tonejs/midi'); // Add this for MIDI generation
-
-const app = express();
-const PORT = 5001;
-
-// Enable CORS to allow frontend to access the backend
-app.use(cors());
-
-// Serve static files (index.html, app.js, styles.css, etc.) from the root directory
-app.use(express.static(path.join(__dirname, '..'))); // This serves files from the root project directory
-
-// Serve sounds from the /sounds2 directory
-app.use('/sounds2', express.static(path.join(__dirname, '..', 'sounds2')));
-
-// Middleware to parse JSON data from the frontend
-app.use(express.json());
-
-// Serve index.html when accessing the root URL
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'index.html')); // Ensure it loads index.html correctly
-});
-
-// POST route to save MIDI data
-app.post("/save-midi", (req, res) => {
-    const recordedNotes = req.body.notes;
-    
-    if (!recordedNotes || recordedNotes.length === 0) {
-        return res.status(400).json({ error: "No notes recorded." });
-    }
-
-    // Create a new MIDI file
-    const midi = new Midi();
-
-    // Create a track for the recorded notes
-    const track = midi.addTrack();
-
-    // Add notes to the track
-    recordedNotes.forEach(({ note, time }) => {
-        const midiNote = noteToMidi(note); // Convert note to MIDI number
-        track.addNote({
-            midi: midiNote,
-            time: time,
-            duration: 1, // You can adjust the duration as needed
-        });
-    });
-
-    // Save the MIDI file to the server directory (outside of the public folder for safety)
-    const filePath = path.join(__dirname, 'recorded.mid'); // Save it directly under the server folder
-    fs.writeFileSync(filePath, Buffer.from(midi.toArray()));
-
-    console.log("MIDI file saved:", filePath);
-    
-    // Provide the file path for download (you may want to adjust this)
-    res.json({ message: "MIDI file saved successfully", filePath: `/recorded.mid` });
-});
-
-// Utility function to convert note name to MIDI number
-function noteToMidi(note) {
-    const noteMap = {
-        C: 0, "C#": 1, D: 2, "D#": 3, E: 4, F: 5, "F#": 6, G: 7, "G#": 8, A: 9, "A#": 10, B: 11
-    };
-    const octave = parseInt(note[note.length - 1], 10); // Get the octave number
-    const noteName = note.slice(0, -1); // Get the note name without the octave
-    return noteMap[noteName] + (octave + 1) * 12; // Convert to MIDI number
-}
-
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
-*/
-
-
-
-
-
