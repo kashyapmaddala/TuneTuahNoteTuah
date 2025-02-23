@@ -1,0 +1,16 @@
+fastapi
+transformers
+torch
+tempfile
+torchaudio
+basic_pitch
+numpy
+os
+random
+collections
+music21
+sys
+mido
+scipy
+argparse
+soundfile
