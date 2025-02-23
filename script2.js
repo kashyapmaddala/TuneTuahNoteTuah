@@ -21,6 +21,49 @@ document.addEventListener("DOMContentLoaded", () => {
     const stopButton = document.getElementById("stop");
     const playbackButton = document.getElementById("playback");
 
+
+    // Alternate textToMidi code
+
+    // async function convertTextToMidi(text) {
+    //     try {
+    //         const response = await fetch('/save-text', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({ text })
+    //         });
+    
+    //         if (!response.ok) throw new Error('Failed to convert text to MIDI');
+    
+    //         const data = await response.json();
+    //         return data.midiPath;
+    //     } catch (error) {
+    //         console.error('Error converting text to MIDI:', error);
+    //         throw error;
+    //     }
+    // }
+    
+    // generateButton.addEventListener('click', async () => {
+    //     const text = melodyText.value.trim();
+    //     if (!text) {
+    //         alert('Please enter a melody description');
+    //         return;
+    //     }
+    
+    //     try {
+    //         const midiPath = await convertTextToMidi(text);
+    //         console.log('Generated MIDI file path:', midiPath);
+    //         // You can now use the midiPath to play the generated MIDI file
+    //     } catch (error) {
+    //         alert('Error generating MIDI file. Please try again.');
+    //     }
+    // });
+
+
+
+
+    //ORIGINAL generateButton code
     generateButton.addEventListener('click', async () => {
         const text = melodyText.value.trim();
         
@@ -167,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         playGeneratedBtn.disabled = true;
         playbackButton.disabled = true;
-        Button
+        
         console.log("Recording started...");
     });
 
@@ -227,13 +270,9 @@ document.addEventListener("DOMContentLoaded", () => {
         playGeneratedBtn.disabled = false;
     });
 
+    // ORIGINAL playGeneratedBtn code
     playGeneratedBtn.addEventListener('click', async () => {
         try {
-            recordButton.disabled = true;
-            stopButton.disabled = true;
-            playbackButton.disabled = true;
-            generateButton.disabled = true;
-            playGeneratedBtn.disabled = true;
 
             // Stop any current playback
             Tone.Transport.stop();
@@ -261,17 +300,47 @@ document.addEventListener("DOMContentLoaded", () => {
             await Tone.start();
             console.log("Playing the generated melody!");
             Tone.Transport.start();
-
-            recordButton.disabled = false;
-            stopButton.disabled = true;
-            playbackButton.disabled = false;
-            generateButton.disabled = false;
-            playGeneratedBtn.disabled = false;
-
+    
         } catch (error) {
             console.error("Error playing generated melody:", error);
         }
     });
+
+
+    // ALTERNATE playGeneratedBtn code
+    // document.getElementById('play-generated').addEventListener('click', async () => {
+    //     try {
+    //         // Stop any current playback
+    //         Tone.Transport.stop();
+            
+    //         // Fetch the generated MIDI file
+    //         const response = await fetch('/server/generated.mid');
+    //         const arrayBuffer = await response.arrayBuffer();
+    
+    //         // Create a MIDI object from the file
+    //         const midi = new Midi(arrayBuffer);
+    
+    //         // Start with a clean transport
+    //         Tone.Transport.cancel();
+            
+    //         // Schedule all notes from the generated MIDI
+    //         midi.tracks.forEach(track => {
+    //             track.notes.forEach(note => {
+    //                 Tone.Transport.scheduleOnce(time => {
+    //                     synth.triggerAttackRelease(note.name, note.duration, time);
+    //                 }, note.time);
+    //             });
+    //         });
+    
+    //         // Start the audio context and transport
+    //         await Tone.start();
+    //         console.log("Playing the generated melody!");
+    //         Tone.Transport.start();
+    
+    //     } catch (error) {
+    //         console.error("Error playing generated melody:", error);
+    //     }
+    // });
 });
 
 

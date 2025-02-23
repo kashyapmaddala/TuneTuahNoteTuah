@@ -64,7 +64,6 @@ app.post("/save-midi", (req, res) => {
     // Run midi_generator.py to process the MIDI file
     const pythonProcess = spawn('python3', [path.join(__dirname, '..', 'python', 'midi_generator.py')]);
 
-
     let outputData = '';
     let errorData = '';
 
@@ -96,51 +95,32 @@ app.post("/save-midi", (req, res) => {
     });
 });
 
-app.post('/save-text', (req, res) => {
+app.post('/save-text', async (req, res) => {
     const text = req.body.text;
-    
-    
+
     if (!text || text.trim() === '') {
         return res.status(400).json({ error: "No text provided" });
     }
 
-    const textFilePath = path.join(serverDir, 'input.txt');
-    const generatedMidiPath = path.join(serverDir, 'generated2.mid');
-
     try {
-        // Save text to file
-        fs.writeFileSync(textFilePath, text.trim());
-        console.log(`Text saved to ${textFilePath}`);
+        // Call the FastAPI endpoint
+        const response = await axios.post('http://localhost:8000/generate_music/', new URLSearchParams({ text }));
 
-        // Run Python script
-        const pythonProcess = spawn('python3', [pythonScriptPath, textFilePath]);
+        if (response.status !== 200) {
+            throw new Error('Failed to generate music');
+        }
 
-        let output = '';
-        let errors = '';
+        const { audio, midi } = response.data;
 
-        pythonProcess.stdout.on('data', (data) => output += data.toString());
-        pythonProcess.stderr.on('data', (data) => errors += data.toString());
-
-        pythonProcess.on('close', (code) => {
-            if (code === 0) {
-                console.log('Python script completed successfully');
-                res.json({ 
-                    message: 'Melody generated successfully',
-                    midiPath: '/server/generated.mid'
-                });
-            } else {
-                console.error(`Python script failed with code ${code}: ${errors}`);
-                res.status(500).json({ 
-                    error: 'Melody generation failed',
-                    details: errors
-                });
-            }
+        res.json({
+            message: 'Melody generated successfully',
+            audioPath: audio,
+            midiPath: midi
         });
-
     } catch (error) {
-        console.error('Text processing error:', error);
-        res.status(500).json({ 
-            error: 'Internal server error',
+        console.error('Error generating melody:', error);
+        res.status(500).json({
+            error: 'Melody generation failed',
             details: error.message
         });
     }
