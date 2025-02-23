@@ -8,8 +8,18 @@ document.getElementById("start-audio").addEventListener("click", async () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    
+    // Separate playback functionality for generated melody (based on the input melody)
+    const playGeneratedBtn = document.getElementById('play-generated');
+
+    // Generate a quick melody based on some text
     const generateButton = document.getElementById('generate-button');
     const melodyText = document.getElementById('melody-text');
+
+    // Record, stop, playback functions    
+    const recordButton = document.getElementById("record");
+    const stopButton = document.getElementById("stop");
+    const playbackButton = document.getElementById("playback");
 
     generateButton.addEventListener('click', async () => {
         const text = melodyText.value.trim();
@@ -46,7 +56,12 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error('Generation error:', error);
             alert('Error processing request. Please try again.');
         }
-
+        
+        recordButton.disabled = true;
+        stopButton.disabled = true;
+        playbackButton.disabled = true;
+        generateButton.disabled = true;
+        playGeneratedBtn.disabled = true;
         try {
             // Stop any current playback
             Tone.Transport.stop();
@@ -74,10 +89,16 @@ document.addEventListener("DOMContentLoaded", () => {
             await Tone.start();
             console.log("Playing the generated melody!");
             Tone.Transport.start();
-
+            
         } catch (error) {
             console.error("Error playing generated melody:", error);
         }
+
+        recordButton.disabled = false;
+        stopButton.disabled = true;
+        playbackButton.disabled = false;
+        generateButton.disabled = false;
+        playGeneratedBtn.disabled = false;
     });
 
 
@@ -134,17 +155,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    const recordButton = document.getElementById("record");
-    const stopButton = document.getElementById("stop");
-    const playbackButton = document.getElementById("playback");
-
     recordButton.addEventListener("click", () => {
         recordedNotes = [];
         recording = true;
         startTime = Tone.now();
         recordButton.disabled = true;
         stopButton.disabled = false;
+        generateButton.disabled = true;
+
+        playGeneratedBtn.disabled = true;
         playbackButton.disabled = true;
+        Button
         console.log("Recording started...");
     });
 
@@ -153,6 +174,9 @@ document.addEventListener("DOMContentLoaded", () => {
         recordButton.disabled = false;
         stopButton.disabled = true;
         playbackButton.disabled = recordedNotes.length === 0 ? true : false;
+
+        playGeneratedBtn.disabled = recordedNotes.length === 0 ? true : false;
+        generateButton.disabled = false;
         console.log("Recording stopped:", recordedNotes);
 
         // Send recorded notes to the server to save as MIDI
@@ -173,6 +197,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // ... (keep all the previous code until the playbackButton section)
 
     playbackButton.addEventListener("click", () => {
+        recordButton.disabled = true;
+        stopButton.disabled = true;
+        playbackButton.disabled = true;
+        generateButton.disabled = true;
+        playGeneratedBtn.disabled = true;
+
         if (transportPlaying) {
             Tone.Transport.stop();
             transportPlaying = false;
@@ -187,12 +217,22 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             Tone.Transport.start();
         }
+
+        recordButton.disabled = false;
+        stopButton.disabled = true;
+        playbackButton.disabled = false;
+        generateButton.disabled = false;
+        playGeneratedBtn.disabled = false;
     });
 
-    // Separate playback functionality for generated melody
-    const playGeneratedBtn = document.getElementById('play-generated');
     playGeneratedBtn.addEventListener('click', async () => {
         try {
+            recordButton.disabled = true;
+            stopButton.disabled = true;
+            playbackButton.disabled = true;
+            generateButton.disabled = true;
+            playGeneratedBtn.disabled = true;
+
             // Stop any current playback
             Tone.Transport.stop();
             
@@ -219,6 +259,12 @@ document.addEventListener("DOMContentLoaded", () => {
             await Tone.start();
             console.log("Playing the generated melody!");
             Tone.Transport.start();
+
+            recordButton.disabled = false;
+            stopButton.disabled = true;
+            playbackButton.disabled = false;
+            generateButton.disabled = false;
+            playGeneratedBtn.disabled = false;
 
         } catch (error) {
             console.error("Error playing generated melody:", error);
