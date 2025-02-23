@@ -66,9 +66,10 @@ class MelodyGenerator:
             if all(n['degree'] in self.scale_degrees for n in notes[i:i+self.order+1]):
                 degree_state = tuple(n['degree'] for n in notes[i:i+self.order])
                 degree_model[degree_state].append(notes[i+self.order]['degree'])
-                
-                duration_state = tuple(n['duration'] for n in notes[i:i+self.order])
-                duration_model[duration_state].append(notes[i+self.order]['duration'])
+
+        for i in range(len(notes)-self.order-2):        
+                duration_state = tuple(n['duration'] for n in notes[i:i+self.order+2])
+                duration_model[duration_state].append(notes[i+self.order+2]['duration'])
         
         return degree_model, duration_model
 
@@ -92,7 +93,7 @@ class MelodyGenerator:
             pitch = self._degree_to_pitch(degree, last_degree)
             
             # Add harmonic support within scale
-            if random.random() < 0.3:  # 30% chance of in-scale harmony
+            if random.random() < 0.2:  # 30% chance of in-scale harmony
                 harmony_degree = self._get_harmony_degree(degree)
                 harmony_pitch = self._degree_to_pitch(harmony_degree, degree)
                 melody.append({'pitches': sorted([pitch, harmony_pitch]), 'duration': duration})
@@ -133,7 +134,7 @@ class MelodyGenerator:
         """Get harmonically related scale degree"""
         intervals = [2, 4]  # Third and fifth intervals
         interval = random.choice(intervals)
-        harmony_degree = (degree + interval - 1) % 7 + 1
+        harmony_degree = 6#(degree + interval - 1) % 7 + 1
         return harmony_degree if harmony_degree in self.scale_degrees else degree
 
     def save_midi(self, original_stream, generated, output_path):
@@ -151,7 +152,7 @@ class MelodyGenerator:
         
         # Add generated content with scale validation
         last_offset = max(n.offset + n.duration.quarterLength for n in original_stream.flat.notes) if original_stream.notes else 0
-        current_offset = last_offset + 2.0
+        current_offset = last_offset# + 2.0
         
         for note_data in generated:
             if 'pitches' in note_data:
@@ -193,12 +194,12 @@ if __name__ == "__main__":
         exit(1)
         
     # Initialize generator
-    generator = MelodyGenerator(order=2, chord_interval=3, max_leap=4)
+    generator = MelodyGenerator(order=2, chord_interval=4, max_leap=4)
     
     # Process MIDI
     try:
         notes, chords, original_stream = generator.parse_midi(input_path)
-        generated_notes = generator.generate(notes+chords)
+        generated_notes = generator.generate(notes)
         generator.save_midi(original_stream, generated_notes, output_path)
         print(f"Successfully generated {len(generated_notes)} notes in {output_path}")
     except Exception as e:
