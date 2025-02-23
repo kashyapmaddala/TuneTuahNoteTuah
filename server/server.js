@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const { Midi } = require('@tonejs/midi'); // Add this for MIDI generation
 const { spawn } = require('child_process'); // Used to run midi_generator.py
-const axios = require('axios'); // Add axios for HTTP requests
+// const axios = require('axios'); // Add axios for HTTP requests
 
 const app = express();
 const PORT = 5002;
