@@ -158,6 +158,8 @@ document.addEventListener("DOMContentLoaded", () => {
     recordButton.addEventListener("click", () => {
         recordedNotes = [];
         recording = true;
+        Tone.Transport.stop();
+        Tone.Transport.cancel();
         startTime = Tone.now();
         recordButton.disabled = true;
         stopButton.disabled = false;
