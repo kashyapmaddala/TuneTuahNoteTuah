@@ -1,0 +1,174 @@
+/* TEXT */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(to bottom, #3a1c71, #d76d77, #ffaf7b);
+    color: white;
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+/* MOSTLY PIANO */
+
+button {
+    padding: 12px 20px;
+    margin: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: #6c5ce7;
+    color: white;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    background-color: #4834d4;
+    transform: scale(1.05);
+}
+
+button:disabled, .disabled {
+    background-color: grey;
+    color: white;
+    cursor: not-allowed;
+}
+
+
+.piano-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.piano {
+    display: flex;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    overflow-x: auto;
+    max-width: 90vw;
+}
+
+.key {
+    width: 50px;
+    height: 180px;
+    margin: 1px;
+    border: 2px solid black;
+    background-color: white;
+    display: inline-block;
+    text-align: center;
+    line-height: 180px;
+    cursor: pointer;
+    user-select: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.1s ease-in-out;
+}
+
+.key.black {
+    width: 35px;
+    height: 120px;
+    background-color: black;
+    color: white;
+    position: relative;
+    margin-left: -18px;
+    margin-right: -18px;
+    z-index: 1;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.key:active {
+    background-color: #ddd;
+} 
+
+.key span {
+    position: absolute;
+    bottom: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: grey;
+}
+
+.key.white span {
+    bottom: 3px;
+}
+
+/* NAVIGATION BAR */
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    position: sticky;
+    top: 0;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    background-color: #333333;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color: #111;
+}
+
+.active {
+    background-color: #9134d4;
+}
+
+li {
+    float: left;
+    border-right: 1px solid #bbb;
+}
+  
+li:last-child {
+    border-right: none;
+}
+
+.text-input-container {
+    margin: 20px 0;
+}
+
+#melody-text {
+    padding: 10px;
+    width: 300px;
+    margin-right: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+#generate-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#generate-button:hover {
+    background-color: #45a049;
+}

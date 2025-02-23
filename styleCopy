@@ -1,0 +1,94 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(to bottom, #3a1c71, #d76d77, #ffaf7b);
+    color: white;
+}
+
+button {
+    padding: 12px 20px;
+    margin: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: #6c5ce7;
+    color: white;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    background-color: #4834d4;
+    transform: scale(1.05);
+}
+
+/* Specific changes for the Play Generated Melody button */
+#playGeneratedBtn {
+    background-color: #ffaf7b; /* Unique color for this button */
+    font-size: 18px; /* Larger font for emphasis */
+    padding: 14px 24px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Slightly stronger shadow for prominence */
+}
+
+#playGeneratedBtn:hover {
+    background-color: #e57e49; /* Darker shade on hover */
+    transform: scale(1.05);
+}
+
+.piano-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.piano {
+    display: flex;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    overflow-x: auto; /*Allows scrolling if too wide*/
+    max-width: 90vw;
+}
+
+.key {
+    width: 50px;
+    height: 180px;
+    margin: 1px;
+    border: 2px solid black;
+    background-color: white;
+    display: inline-block;
+    text-align: center;
+    line-height: 180px;
+    cursor: pointer;
+    user-select: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.1s ease-in-out;
+}
+
+.key.black {
+    width: 35px;
+    height: 120px;
+    background-color: black;
+    color: white;
+    position: relative;
+    margin-left: -18px;
+    margin-right: -18px;
+    z-index: 1;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.key:active {
+    background-color: #ddd;
+}
+
+.key.black:active {
+    background-color: #444;
+}
