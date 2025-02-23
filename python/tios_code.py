@@ -6,8 +6,13 @@ from mido import MidiFile, MidiTrack, Message
 from music21 import key, chord, stream, note
 import os
 import librosa
+from fastapi import FastAPI, Form
+from fastapi.responses import FileResponse
+import tempfile
 import soundfile as sf
 from transformers import AutoProcessor, MusicgenForConditionalGeneration
+
+app = FastAPI()
 
 # Configuration for MusicGen Melody
 MUSICGEN_CONFIG = {
@@ -168,14 +173,14 @@ def save_output(audio_array, output_path, sr=44100):
     sf.write(output_path, audio_array, sr)
     print(f"🎵 Saved generated audio to {output_path}")
 
-if __name__ == "__main__":
+@app.post("/generate_music/")
+async def generate_music(text: str = Form(...)):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     input_path = os.path.join(script_dir, '..', 'server', 'recorded.mid')
-    output_path = os.path.join(script_dir, '..', 'server', 'generated.wav')
+    output_path = tempfile.NamedTemporaryFile(suffix=".wav", delete=False).name
 
     if not os.path.exists(input_path):
-        print(f"Error: Input file not found at {input_path}")
-        exit(1)
+        return {"error": f"Input file not found at {input_path}"}
 
     # Process MIDI input
     processor = MidiProcessor(input_path)
@@ -187,3 +192,9 @@ if __name__ == "__main__":
 
     # Save final output
     save_output(generated_audio, output_path)
+
+    return {"audio": FileResponse(output_path, media_type="audio/wav", filename="generated_music.wav")}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
