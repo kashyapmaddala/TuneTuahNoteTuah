@@ -172,3 +172,14 @@ li:last-child {
 #generate-button:hover {
     background-color: #45a049;
 }
+
+
+
+#logo {
+    width: 200px;
+    height: 200px;
+}
+#logo2 {
+    width: 200px;
+    height: 200px;
+}

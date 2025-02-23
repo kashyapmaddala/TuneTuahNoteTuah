@@ -9,10 +9,20 @@
     <script src="https://cdn.jsdelivr.net/npm/@tonejs/midi"></script>
 </head>
 <body>
+    
     <ul>
         <li><a href="index.html">PIANO</a></li>
     </ul>
-    <h1>TuneTuahNote</h1>
+
+    <div class="header">
+        <div style="width: 2000px;">
+            <div style="float: left; width: 200px;"><img id="logo" src="logo.jpeg" alt="Logo1"></div>
+            <div style="float: left; width: 1000px;"><h1>TuneTuahNote</h1></div>
+            <div style="float: left; width: 200px;"><img id="logo" src="logo.jpeg" alt="Logo2"></div>
+            <br style="clear: left;" />
+           </div>
+    </div>
+
     <p>We have a four octave piano.</p>
     <p>Click on the keys to play notes. Press 'Start Audio' before playing.</p>
     <p>You can also record and stop recording and play back what you inputted.</p>
@@ -32,9 +42,9 @@
                placeholder="Describe your melody (e.g. 'happy jazz tune')">
         <button id="generate-button">Generate Music With AI</button>
     </div>
-<!--     
+    
     <p>Would you like to download your music?</p>
-    <button id="download" disabled>Download Music</button> -->
+    <button id="download" disabled>Download Music</button>
 
     <!-- Place script at the end to ensure elements exist -->
     <script src="script2.js"></script>
